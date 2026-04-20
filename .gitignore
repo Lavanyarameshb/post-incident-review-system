@@ -1,0 +1,14 @@
+# Environment variables - never push to GitHub
+.env
+
+# Java / Spring Boot
+target/
+
+# Python
+__pycache__/
+
+# Node / React
+node_modules/
+
+# ChromaDB
+chroma_data/
