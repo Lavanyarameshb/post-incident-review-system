@@ -1,4 +1,4 @@
-# Environment variables - never push to GitHub
+# Environment variables 
 .env
 
 # Java / Spring Boot
@@ -7,7 +7,7 @@ target/
 # Python
 __pycache__/
 
-# Node / React
+# Node 
 node_modules/
 
 # ChromaDB
