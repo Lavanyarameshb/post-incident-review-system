@@ -14,6 +14,14 @@ Java Developer 1
 - Security dependency configured
 - Project successfully running on localhost:8080
 
+### Day 2
+- Created Incident entity class
+- Added JPA annotations (@Entity, @Table, @Id)
+- Added database fields for incident records
+- Created IncidentRepository interface
+- Added custom query methods
+- Build verified successfully
+
 ## Tech Stack
 - Java 17
 - Spring Boot
