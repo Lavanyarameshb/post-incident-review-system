@@ -1,26 +1,39 @@
 # Post Incident Review System
 
-Final Internship Project
-
-## Role
+## My Role
 Java Developer 1
 
-## Day 1 Work Completed
-- Spring Boot project setup
-- Maven configuration
-- Java 17 setup
-- Project folder structure created
-- application.yml added
-- Security dependency configured
-- Project successfully running on localhost:8080
-
-## Tech Stack
+## Tech Stack Used
 - Java 17
 - Spring Boot
+- Spring Data JPA
 - Maven
-- Spring Security
 - PostgreSQL
-- Redis
+- Git
+- GitHub
+- VS Code
 
-## Branch
-java-dev-1-day-1
+### Day 1
+- Spring Boot project setup completed
+- Maven configured successfully
+- Java 17 environment setup completed
+- Project folder structure created
+- application.yml configured
+- Project build and run verified
+
+### Day 2
+- Created Incident entity class
+- Added JPA annotations (@Entity, @Table, @Id)
+- Added database fields for incident records
+- Created IncidentRepository interface
+- Added custom query methods
+- Build verified successfully
+
+### Day 3
+- Implemented IncidentService class
+- Added business logic for creating and fetching incidents
+- Added input validation for required fields
+- Created ResourceNotFoundException class
+- Created InvalidDataException class
+- Integrated service layer with IncidentRepository
+- Verified project build successfully using Maven
