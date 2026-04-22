@@ -1,0 +1,2 @@
+-- Initial migration file
+-- Actual schema will be added later
