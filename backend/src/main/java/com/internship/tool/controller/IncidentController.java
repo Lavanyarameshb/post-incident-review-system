@@ -1,13 +1,13 @@
 package com.internship.tool.controller;
 
-import com.internship.tool.dto.IncidentRequest;
 import com.internship.tool.entity.Incident;
 import com.internship.tool.service.IncidentService;
-import jakarta.validation.Valid;
-import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/incidents")
@@ -19,24 +19,34 @@ public class IncidentController {
         this.incidentService = incidentService;
     }
 
+    @PreAuthorize("hasAnyRole('USER','ADMIN')")
     @GetMapping("/all")
-    public ResponseEntity<Page<Incident>> getAllIncidents(
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "5") int size) {
-
-        Page<Incident> incidents = incidentService.getAllIncidents(page, size);
-        return ResponseEntity.ok(incidents);
+    public ResponseEntity<List<Incident>> getAllIncidents() {
+        return ResponseEntity.ok(incidentService.getAllIncidents());
     }
 
+    @PreAuthorize("hasAnyRole('USER','ADMIN')")
     @GetMapping("/{id}")
     public ResponseEntity<Incident> getIncidentById(@PathVariable Long id) {
-        Incident incident = incidentService.getIncidentById(id);
-        return ResponseEntity.ok(incident);
+        return ResponseEntity.ok(incidentService.getIncidentById(id));
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/create")
-    public ResponseEntity<Incident> createIncident(@Valid @RequestBody IncidentRequest request) {
-        Incident savedIncident = incidentService.createIncident(request);
-        return new ResponseEntity<>(savedIncident, HttpStatus.CREATED);
+    public ResponseEntity<Incident> createIncident(@RequestBody Incident incident) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(incidentService.createIncident(incident));
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @PutMapping("/{id}")
+    public ResponseEntity<Incident> updateIncident(@PathVariable Long id, @RequestBody Incident incident) {
+        return ResponseEntity.ok(incidentService.updateIncident(id, incident));
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deleteIncident(@PathVariable Long id) {
+        incidentService.deleteIncident(id);
+        return ResponseEntity.ok("Incident deleted successfully");
     }
 }
