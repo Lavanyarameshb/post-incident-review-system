@@ -40,18 +40,15 @@ def detect_prompt_injection(text: str) -> bool:
 @app.before_request
 def sanitize_request():
     if request.is_json:
-        data = request.get_json()
+        data = request.get_json(silent=True)
         if data:
             for key in data:
                 if isinstance(data[key], str):
-                    # 1. Strip HTML
+                    # strip html
                     data[key] = strip_html(data[key])
-                    # 2. Check for Injection right here!
+                    # check for injection
                     if detect_prompt_injection(data[key]):
                         return jsonify({"error": "Invalid input detected"}), 400
-            
-            request._cached_json = data
-
 
 @app.route('/health', methods=['GET'])
 def health():
@@ -62,18 +59,13 @@ def health():
 @app.route('/describe', methods=['POST'])
 @limiter.limit("30 per minute")
 def describe():
-    data = request.get_json()
+    data = request.get_json(silent=True, force=True)
 
     if not data or 'text' not in data:
         return jsonify({"error": "No input provided"}), 400
 
     user_input = data['text']
 
-    # prompt injection check
-    if detect_prompt_injection(user_input):
-        return jsonify({"error": "Invalid input detected"}), 400
-
-    # placeholder response (actual AI logic will come later)
     return jsonify({"message": "Input is safe", "cleaned_text": user_input}), 200
 
 
