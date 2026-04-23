@@ -46,3 +46,12 @@ Java Developer 1
 - Added POST /create endpoint with @Valid
 - Created IncidentRequest DTO
 - Verified project build successfully using Maven
+
+
+### Day 5
+- Added JwtUtil class
+- Added JwtAuthFilter
+- Added SecurityConfig
+- Created AuthController
+- Added /register, /login, and /refresh endpoints
+- Verified project build successfully using Maven
