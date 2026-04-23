@@ -55,3 +55,17 @@ Java Developer 1
 - Created AuthController
 - Added /register, /login, and /refresh endpoints
 - Verified project build successfully using Maven
+
+
+## Day 6 
+
+- Added Redis caching
+- Added 10 minute cache time
+- Used @Cacheable for GET APIs
+- Used @CacheEvict for Create, Update, Delete APIs
+- Added RBAC security
+- Used @PreAuthorize for role access
+
+### Access
+- USER and ADMIN can view data
+- ADMIN can add, update, delete data
