@@ -1,34 +1,29 @@
-package com.internship.tool.entity;
+package com.internship.tool.dto;
 
-import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+
 import java.time.LocalDateTime;
 
-@Entity
-@Table(name = "incidents")
-public class Incident {
+public class IncidentRequest {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
+    @NotBlank(message = "Title is required")
     private String title;
+
     private String description;
+
+    @NotBlank(message = "Severity is required")
     private String severity;
+
+    @NotBlank(message = "Status is required")
     private String status;
+
     private String reportedBy;
+
+    @NotNull(message = "Incident date is required")
     private LocalDateTime incidentDate;
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
 
-    public Incident() {
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
+    public IncidentRequest() {
     }
 
     public String getTitle() {
@@ -77,21 +72,5 @@ public class Incident {
 
     public void setIncidentDate(LocalDateTime incidentDate) {
         this.incidentDate = incidentDate;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public LocalDateTime getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(LocalDateTime updatedAt) {
-        this.updatedAt = updatedAt;
     }
 }
