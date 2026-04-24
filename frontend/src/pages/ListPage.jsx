@@ -9,7 +9,7 @@ export default function ListPage() {
  const fetchData = () => {
   setLoading(true);
   api.get("/api/incidents/all")
-   .then(res => setData(res.data))
+   .then(res => setData(res.data.content))
    .catch(() => setData([]))
    .finally(() => setLoading(false));
  };
