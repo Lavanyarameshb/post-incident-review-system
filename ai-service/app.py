@@ -64,10 +64,13 @@ def describe():
     if not data or 'text' not in data:
         return jsonify({"error": "No input provided"}), 400
 
+    if data['text'].strip() == "":
+        return jsonify({"error": "Input cannot be empty"}), 400
+
     user_input = data['text']
 
     return jsonify({"message": "Input is safe", "cleaned_text": user_input}), 200
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000, debug=True)
+    app.run(host='127.0.0.1', port=5000, debug=True)
