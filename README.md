@@ -83,3 +83,13 @@ Java Developer 1
 ### Schedule
 - Daily reminder at 9:00 AM
 - Deadline alert at 5:00 PM
+
+
+## Day 8 Progress
+
+- Added global exception handling
+- Added consistent JSON error response
+- Added 404 / 400 / 500 handlers
+- Added JUnit 5 tests
+- Added Mockito tests
+- Build successful
