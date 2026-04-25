@@ -69,3 +69,17 @@ Java Developer 1
 ### Access
 - USER and ADMIN can view data
 - ADMIN can add, update, delete data
+
+
+## Day 7 
+
+- Added email notification feature
+- Used JavaMailSender
+- Added ReminderService
+- Added daily scheduled reminder
+- Added deadline alert email
+- Enabled scheduling in application
+
+### Schedule
+- Daily reminder at 9:00 AM
+- Deadline alert at 5:00 PM
