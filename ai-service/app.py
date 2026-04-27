@@ -2,6 +2,7 @@ import re
 from flask import Flask, request, jsonify
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
+from services.groq_client import GroqClient
 
 app = Flask(__name__)
 
@@ -11,6 +12,9 @@ limiter = Limiter(
     app=app,
     default_limits=["30 per minute"]
 )
+
+# initialising groq client
+groq_client = GroqClient()
 
 # list of prompt injection patterns to detect
 INJECTION_PATTERNS = [
@@ -36,7 +40,6 @@ def detect_prompt_injection(text: str) -> bool:
             return True
     return False
 
-# 🔹 Global sanitization (applies to all requests)
 @app.before_request
 def sanitize_request():
     if request.is_json:
@@ -54,12 +57,10 @@ def sanitize_request():
 def health():
     return jsonify({"status": "ok"})
 
-
-# 🔹 Example endpoint (for Day 3 validation)
 @app.route('/describe', methods=['POST'])
 @limiter.limit("30 per minute")
 def describe():
-    data = request.get_json(silent=True, force=True)
+    data = request.get_json(silent=True)
 
     if not data or 'text' not in data:
         return jsonify({"error": "No input provided"}), 400
@@ -69,8 +70,13 @@ def describe():
 
     user_input = data['text']
 
-    return jsonify({"message": "Input is safe", "cleaned_text": user_input}), 200
+    # calling groq to describe the incident
+    result = groq_client.call(f"Describe this incident briefly: {user_input}")
 
+    if result and result.get("success"):
+        return jsonify({"message": result["data"]}), 200
+    else:
+        return jsonify({"error": "AI service unavailable"}), 500
 
 if __name__ == '__main__':
     app.run(host='127.0.0.1', port=5000, debug=True)
