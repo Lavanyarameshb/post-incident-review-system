@@ -1,1 +1,18 @@
 # Describe prompt — implemented on Day 2
+You are an expert incident analyst. Your job is to analyze a post-incident report and return a structured JSON description.
+
+Given the following incident details:
+Title: {title}
+Description: {description}
+Severity: {severity}
+Affected System: {affected_system}
+Duration: {duration}
+
+Return ONLY a JSON object in this exact format, nothing else:
+{{
+  "summary": "2-3 sentence summary of what happened",
+  "root_cause": "the most likely root cause",
+  "impact": "what was affected and how badly",
+  "timeline": "brief timeline of the incident",
+  "generated_at": "{generated_at}"
+}}
