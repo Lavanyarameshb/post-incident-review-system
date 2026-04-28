@@ -16,8 +16,12 @@ limiter = Limiter(
     default_limits=["30 per minute"]
 )
 
+# Register blueprints
 from routes.health import health_bp
+from routes.describe import describe_bp
+
 app.register_blueprint(health_bp)
+app.register_blueprint(describe_bp)
 
 @app.route("/")
 def index():
