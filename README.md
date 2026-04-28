@@ -93,3 +93,17 @@ Java Developer 1
 - Added JUnit 5 tests
 - Added Mockito tests
 - Build successful
+
+
+## Day 9 Progress
+
+- Added docker-compose.yml in project root
+- Configured 5 services:
+  - backend
+  - PostgreSQL
+  - Redis
+  - AI service
+  - frontend
+- Added healthchecks for PostgreSQL and Redis
+- Tested Docker commands
+- Docker image pull attempted
