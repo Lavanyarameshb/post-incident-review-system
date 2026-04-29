@@ -68,13 +68,38 @@
 ## Prompt Tuning Security 
 
 ### Groq Integration Security:
-- Groq API key is stored securely in .env file ✅
-- All inputs are sanitised before being sent to Groq ✅
-- Prompt injection patterns are detected and blocked ✅
-- Rate limiting of 30 requests/min is active ✅
+- Groq API key is stored securely in .env file 
+- All inputs are sanitised before being sent to Groq 
+- Prompt injection patterns are detected and blocked 
+- Rate limiting of 30 requests/min is active 
 
 ### Prompt Tuning Results:
 - Tested 10 real incident inputs on /describe endpoint
 - All responses scored above 7/10
 - Average score: 8.8/10
-- No prompt rewri
+- No prompt rewriting was needed
+- AI responses are consistent and professional 
+
+## Day 7 — OWASP ZAP Scan Results
+
+### Scan Details:
+- Tool: OWASP ZAP 2.17.0
+- Target: http://127.0.0.1:5000
+- Date: 29 April 2026
+
+### Summary:
+- High: 0 
+- Medium: 2
+- Low: 2
+- Informational: 1
+
+### Medium Findings:
+1. CSP Header Not Set — Fixed by adding Content-Security-Policy header
+2. CSP Failure to Define Directive — Planned for next sprint
+
+### Low Findings:
+1. Server Leaks Version Information — Fixed by setting Server header to Unknown
+2. X-Content-Type-Options Header Missing — Fixed by adding nosniff header
+
+### Conclusion:
+No Critical or High findings. All fixable issues have been addressed.

@@ -53,6 +53,15 @@ def sanitize_request():
                     if detect_prompt_injection(data[key]):
                         return jsonify({"error": "Invalid input detected"}), 400
 
+# adding security headers to all responses
+@app.after_request
+def add_security_headers(response):
+    response.headers['Content-Security-Policy'] = "default-src 'self'; script-src 'self'; style-src 'self'"
+    response.headers['X-Content-Type-Options'] = 'nosniff'
+    response.headers['X-Frame-Options'] = 'DENY'
+    response.headers['Server'] = 'Unknown'
+    return response
+
 @app.route('/health', methods=['GET'])
 def health():
     return jsonify({"status": "ok"})
