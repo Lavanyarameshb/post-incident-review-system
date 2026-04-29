@@ -1,11 +1,12 @@
 package com.internship.tool.service;
 
 import com.internship.tool.entity.Incident;
+import com.internship.tool.exception.InvalidDataException;
 import com.internship.tool.exception.ResourceNotFoundException;
 import com.internship.tool.repository.IncidentRepository;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
+import java.util.List;
+
 import java.util.List;
 
 import java.util.List;
@@ -13,44 +14,41 @@ import java.util.List;
 @Service
 public class IncidentService {
 
- private final IncidentRepository repo;
+    private final IncidentRepository incidentRepository;
 
- public IncidentService(IncidentRepository repo){ this.repo = repo; }
+    public IncidentService(IncidentRepository incidentRepository) {
+        this.incidentRepository = incidentRepository;
+    }
 
-    @Cacheable(value = "incidents")
+    public Incident createIncident(Incident incident) {
+        validateIncident(incident);
+        return incidentRepository.save(incident);
+    }
+
     public List<Incident> getAllIncidents() {
         return incidentRepository.findAll();
     }
 
-    @Cacheable(value = "incident", key = "#id")
     public Incident getIncidentById(Long id) {
         return incidentRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Incident not found with id: " + id));
     }
 
-    @CacheEvict(value = {"incidents", "incident"}, allEntries = true)
-    public Incident createIncident(Incident incident) {
-        return incidentRepository.save(incident);
-    }
+    private void validateIncident(Incident incident) {
+        if (incident.getTitle() == null || incident.getTitle().trim().isEmpty()) {
+            throw new InvalidDataException("Title is required");
+        }
 
-    @CacheEvict(value = {"incidents", "incident"}, allEntries = true)
-    public Incident updateIncident(Long id, Incident updatedIncident) {
-        Incident existingIncident = incidentRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Incident not found with id: " + id));
+        if (incident.getSeverity() == null || incident.getSeverity().trim().isEmpty()) {
+            throw new InvalidDataException("Severity is required");
+        }
 
-        existingIncident.setTitle(updatedIncident.getTitle());
-        existingIncident.setDescription(updatedIncident.getDescription());
-        existingIncident.setStatus(updatedIncident.getStatus());
-        existingIncident.setSeverity(updatedIncident.getSeverity());
+        if (incident.getStatus() == null || incident.getStatus().trim().isEmpty()) {
+            throw new InvalidDataException("Status is required");
+        }
 
-        return incidentRepository.save(existingIncident);
-    }
-
-    @CacheEvict(value = {"incidents", "incident"}, allEntries = true)
-    public void deleteIncident(Long id) {
-        Incident incident = incidentRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Incident not found with id: " + id));
-
-        incidentRepository.delete(incident);
+        if (incident.getIncidentDate() == null) {
+            throw new InvalidDataException("Incident date is required");
+        }
     }
 }

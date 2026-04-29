@@ -11,33 +11,87 @@ public class Incident {
  @GeneratedValue(strategy = GenerationType.IDENTITY)
  private Long id;
 
- private String title;
- private String description;
- private String severity;
- private String status;
+    private String title;
+    private String description;
+    private String severity;
+    private String status;
+    private String reportedBy;
+    private LocalDateTime incidentDate;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 
- private LocalDateTime incidentDate;
+    public Incident() {
+    }
 
- private Boolean isDeleted = false;
+    public Long getId() {
+        return id;
+    }
 
- public Long getId() { return id; }
- public void setId(Long id) { this.id = id; }
+    public void setId(Long id) {
+        this.id = id;
+    }
 
- public String getTitle() { return title; }
- public void setTitle(String title) { this.title = title; }
+    public String getTitle() {
+        return title;
+    }
 
- public String getDescription() { return description; }
- public void setDescription(String description) { this.description = description; }
+    public void setTitle(String title) {
+        this.title = title;
+    }
 
- public String getSeverity() { return severity; }
- public void setSeverity(String severity) { this.severity = severity; }
+    public String getDescription() {
+        return description;
+    }
 
- public String getStatus() { return status; }
- public void setStatus(String status) { this.status = status; }
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
- public LocalDateTime getIncidentDate() { return incidentDate; }
- public void setIncidentDate(LocalDateTime incidentDate) { this.incidentDate = incidentDate; }
+    public String getSeverity() {
+        return severity;
+    }
 
- public Boolean getIsDeleted() { return isDeleted; }
- public void setIsDeleted(Boolean isDeleted) { this.isDeleted = isDeleted; }
+    public void setSeverity(String severity) {
+        this.severity = severity;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getReportedBy() {
+        return reportedBy;
+    }
+
+    public void setReportedBy(String reportedBy) {
+        this.reportedBy = reportedBy;
+    }
+
+    public LocalDateTime getIncidentDate() {
+        return incidentDate;
+    }
+
+    public void setIncidentDate(LocalDateTime incidentDate) {
+        this.incidentDate = incidentDate;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
+    }
 }
