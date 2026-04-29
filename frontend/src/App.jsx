@@ -1,33 +1,15 @@
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import Login from "./pages/Login";
-import ListPage from "./pages/ListPage";
-import CreateEdit from "./pages/CreateEdit";
-import ProtectedRoute from "./components/ProtectedRoute";
-import { AuthProvider } from "./context/AuthContext";
+function App() {
+  return (
+    <div className="min-h-screen bg-gray-100 p-6">
+      <h1 className="text-3xl font-bold text-blue-600">
+        Post Incident Review System
+      </h1>
 
-export default function App() {
- return (
-  <AuthProvider>
-   <BrowserRouter>
-    <Routes>
-     <Route path="/login" element={<Login />} />
-
-     <Route
-      path="/"
-      element={
-       <ProtectedRoute>
-        <div className="p-6 space-y-6">
-         <CreateEdit />
-         <ListPage />
-        </div>
-       </ProtectedRoute>
-      }
-     />
-
-     {/* fallback */}
-     <Route path="*" element={<Navigate to="/login" />} />
-    </Routes>
-   </BrowserRouter>
-  </AuthProvider>
- );
+      <p className="mt-2 text-gray-600">
+        Frontend setup completed successfully 🚀
+      </p>
+    </div>
+  );
 }
+
+export default App;
