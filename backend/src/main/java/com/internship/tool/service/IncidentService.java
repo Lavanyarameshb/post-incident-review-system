@@ -1,46 +1,37 @@
 package com.internship.tool.service;
 
 import com.internship.tool.entity.Incident;
-import com.internship.tool.exception.ResourceNotFoundException;
 import com.internship.tool.repository.IncidentRepository;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 
 @Service
 public class IncidentService {
 
-    private final IncidentRepository incidentRepository;
+ private final IncidentRepository repo;
 
-    public IncidentService(IncidentRepository incidentRepository) {
-        this.incidentRepository = incidentRepository;
-    }
+ public IncidentService(IncidentRepository repo){ this.repo = repo; }
 
-    public List<Incident> getAllIncidents() {
-        return incidentRepository.findAll();
-    }
+ public List<Incident> findAll(){
+  return repo.findByIsDeletedFalse();
+ }
 
-    public Incident getIncidentById(Long id) {
-        return incidentRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Incident not found"));
-    }
+ public Incident update(Long id, Incident body){
+  Incident i = repo.findById(id).orElseThrow();
+  i.setTitle(body.getTitle());
+  i.setDescription(body.getDescription());
+  i.setSeverity(body.getSeverity());
+  i.setStatus(body.getStatus());
+  return repo.save(i);
+ }
 
-    public Incident createIncident(Incident incident) {
-        return incidentRepository.save(incident);
-    }
+ public void softDelete(Long id){
+  Incident i = repo.findById(id).orElseThrow();
+  i.setIsDeleted(true);
+  repo.save(i);
+ }
 
-    public Incident updateIncident(Long id, Incident updatedIncident) {
-        Incident incident = getIncidentById(id);
-
-        incident.setTitle(updatedIncident.getTitle());
-        incident.setDescription(updatedIncident.getDescription());
-        incident.setStatus(updatedIncident.getStatus());
-        incident.setSeverity(updatedIncident.getSeverity());
-
-        return incidentRepository.save(incident);
-    }
-
-    public void deleteIncident(Long id) {
-        incidentRepository.deleteById(id);
-    }
+ public List<Incident> search(String q){
+  return repo.findByTitleContainingIgnoreCaseAndIsDeletedFalse(q);
+ }
 }

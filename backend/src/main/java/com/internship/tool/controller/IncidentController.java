@@ -1,52 +1,59 @@
 package com.internship.tool.controller;
 
 import com.internship.tool.entity.Incident;
-import com.internship.tool.service.IncidentService;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
+import com.internship.tool.repository.IncidentRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/incidents")
+@RequestMapping("/api/incidents")
+@CrossOrigin(origins = "*")
 public class IncidentController {
 
-    private final IncidentService incidentService;
+ @Autowired
+ private IncidentRepository repo;
 
-    public IncidentController(IncidentService incidentService) {
-        this.incidentService = incidentService;
-    }
+ // ✅ CREATE
+@PostMapping
+public Incident create(@RequestBody Incident incident) {
+ incident.setIncidentDate(java.time.LocalDateTime.now()); // ✅ ADD THIS
+ return repo.save(incident);
+}
 
-    @PreAuthorize("hasAnyRole('USER','ADMIN')")
-    @GetMapping("/all")
-    public ResponseEntity<List<Incident>> getAllIncidents() {
-        return ResponseEntity.ok(incidentService.getAllIncidents());
-    }
+ // ✅ GET ALL WITH PAGINATION (DAY 5 IMPORTANT)
+ @GetMapping("/all")
+ public Page<Incident> getAll(Pageable pageable) {
+  return repo.findAll(pageable);
+ }
 
-    @PreAuthorize("hasAnyRole('USER','ADMIN')")
-    @GetMapping("/{id}")
-    public ResponseEntity<Incident> getIncidentById(@PathVariable Long id) {
-        return ResponseEntity.ok(incidentService.getIncidentById(id));
-    }
+ // ✅ SEARCH
+ @GetMapping("/search")
+ public List<Incident> search(@RequestParam String q) {
+  return repo.findByTitleContainingIgnoreCase(q);
+ }
 
-    @PreAuthorize("hasRole('ADMIN')")
-    @PostMapping("/create")
-    public ResponseEntity<Incident> createIncident(@RequestBody Incident incident) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(incidentService.createIncident(incident));
-    }
+ // ✅ UPDATE
+ @PutMapping("/{id}")
+ public Incident update(@PathVariable Long id, @RequestBody Incident updated) {
+  Incident existing = repo.findById(id).orElseThrow();
 
-    @PreAuthorize("hasRole('ADMIN')")
-    @PutMapping("/{id}")
-    public ResponseEntity<Incident> updateIncident(@PathVariable Long id, @RequestBody Incident incident) {
-        return ResponseEntity.ok(incidentService.updateIncident(id, incident));
-    }
+  existing.setTitle(updated.getTitle());
+  existing.setDescription(updated.getDescription());
+  existing.setSeverity(updated.getSeverity());
+  existing.setStatus(updated.getStatus());
 
-    @PreAuthorize("hasRole('ADMIN')")
-    @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteIncident(@PathVariable Long id) {
-        incidentService.deleteIncident(id);
-        return ResponseEntity.ok("Incident deleted successfully");
-    }
+  return repo.save(existing);
+ }
+
+ // ✅ SOFT DELETE
+ @DeleteMapping("/{id}")
+ public void delete(@PathVariable Long id) {
+  Incident incident = repo.findById(id).orElseThrow();
+  incident.setIsDeleted(true);
+  repo.save(incident);
+ }
 }
