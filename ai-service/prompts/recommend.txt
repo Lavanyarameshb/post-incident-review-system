@@ -1,0 +1,32 @@
+You are an expert incident response advisor. Based on the incident below, provide exactly 3 actionable recommendations to prevent this from happening again.
+
+Incident Summary: {summary}
+Root Cause: {root_cause}
+Severity: {severity}
+
+Rules:
+- Return ONLY a JSON array, no explanation, no extra text
+- Each item must have exactly these 3 fields: action_type, description, priority
+- action_type must be one of: immediate, short-term, long-term
+- priority must be one of: high, medium, low
+- description must be a clear, specific, actionable step (not vague)
+- Order them from highest to lowest priority
+
+Return ONLY this format:
+[
+  {{
+    "action_type": "immediate",
+    "description": "specific action to take right now",
+    "priority": "high"
+  }},
+  {{
+    "action_type": "short-term",
+    "description": "specific action to take within a week",
+    "priority": "medium"
+  }},
+  {{
+    "action_type": "long-term",
+    "description": "specific action to take within a month",
+    "priority": "low"
+  }}
+]
