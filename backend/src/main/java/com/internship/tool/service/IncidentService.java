@@ -1,8 +1,13 @@
 package com.internship.tool.service;
 
 import com.internship.tool.entity.Incident;
+import com.internship.tool.exception.ResourceNotFoundException;
 import com.internship.tool.repository.IncidentRepository;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
+import java.util.List;
+
 import java.util.List;
 
 @Service
@@ -12,26 +17,40 @@ public class IncidentService {
 
  public IncidentService(IncidentRepository repo){ this.repo = repo; }
 
- public List<Incident> findAll(){
-  return repo.findByIsDeletedFalse();
- }
+    @Cacheable(value = "incidents")
+    public List<Incident> getAllIncidents() {
+        return incidentRepository.findAll();
+    }
 
- public Incident update(Long id, Incident body){
-  Incident i = repo.findById(id).orElseThrow();
-  i.setTitle(body.getTitle());
-  i.setDescription(body.getDescription());
-  i.setSeverity(body.getSeverity());
-  i.setStatus(body.getStatus());
-  return repo.save(i);
- }
+    @Cacheable(value = "incident", key = "#id")
+    public Incident getIncidentById(Long id) {
+        return incidentRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Incident not found with id: " + id));
+    }
 
- public void softDelete(Long id){
-  Incident i = repo.findById(id).orElseThrow();
-  i.setIsDeleted(true);
-  repo.save(i);
- }
+    @CacheEvict(value = {"incidents", "incident"}, allEntries = true)
+    public Incident createIncident(Incident incident) {
+        return incidentRepository.save(incident);
+    }
 
- public List<Incident> search(String q){
-  return repo.findByTitleContainingIgnoreCaseAndIsDeletedFalse(q);
- }
+    @CacheEvict(value = {"incidents", "incident"}, allEntries = true)
+    public Incident updateIncident(Long id, Incident updatedIncident) {
+        Incident existingIncident = incidentRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Incident not found with id: " + id));
+
+        existingIncident.setTitle(updatedIncident.getTitle());
+        existingIncident.setDescription(updatedIncident.getDescription());
+        existingIncident.setStatus(updatedIncident.getStatus());
+        existingIncident.setSeverity(updatedIncident.getSeverity());
+
+        return incidentRepository.save(existingIncident);
+    }
+
+    @CacheEvict(value = {"incidents", "incident"}, allEntries = true)
+    public void deleteIncident(Long id) {
+        Incident incident = incidentRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Incident not found with id: " + id));
+
+        incidentRepository.delete(incident);
+    }
 }
