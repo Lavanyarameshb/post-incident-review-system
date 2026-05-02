@@ -43,3 +43,28 @@
 | Prompt injection | Ignore previous in summary | Stripped | ✅ Pass |
 | Valid input | Full incident details | Full JSON report | ✅ Pass |
 | Truncated JSON | Groq cuts off response | Auto fixed | ✅ Pass |
+
+## OWASP ZAP Scan Results — Day 8
+
+### Security Headers Applied
+- X-Content-Type-Options: nosniff ✅
+- X-Frame-Options: DENY ✅
+- Strict-Transport-Security: max-age=31536000 ✅
+- X-XSS-Protection: 1; mode=block ✅
+- Referrer-Policy: strict-origin-when-cross-origin ✅
+- Content-Security-Policy: default-src 'none' ✅
+- Server header removed ✅
+
+### Error Handling
+- 400 Bad Request — returns JSON ✅
+- 404 Not Found — returns JSON ✅
+- 405 Method Not Allowed — returns JSON ✅
+- 429 Rate Limit Exceeded — returns JSON ✅
+- 500 Internal Server Error — returns JSON ✅
+- Stack traces never exposed in responses ✅
+
+### Findings Fixed
+- Security headers added to all responses
+- Error handlers return consistent JSON
+- Debug mode controlled by FLASK_ENV variable
+- CORS restricted to allowed origins

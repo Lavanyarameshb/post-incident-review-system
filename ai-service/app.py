@@ -2,21 +2,35 @@ import re
 from flask import Flask, request, jsonify
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
+from flask_cors import CORS
 from dotenv import load_dotenv
+from services.security_headers import apply_security_headers
+from services.error_handlers import apply_error_handlers
 import os
 
 load_dotenv()
 
 app = Flask(__name__)
+CORS(app, resources={
+    r"/*": {
+        "origins": os.getenv("ALLOWED_ORIGINS", "http://localhost:80").split(","),
+        "methods": ["GET", "POST"],
+        "allow_headers": ["Content-Type"]
+    }
+})
 
-# Setting up rate limiter - max 30 requests per minute
+# Apply security headers and error handlers
+apply_security_headers(app)
+apply_error_handlers(app)
+
+# Setting up rate limiter
 limiter = Limiter(
     get_remote_address,
     app=app,
     default_limits=["30 per minute"]
 )
 
-# List of prompt injection patterns to detect
+# List of prompt injection patterns
 INJECTION_PATTERNS = [
     "ignore previous instructions",
     "ignore all instructions",
@@ -51,7 +65,7 @@ def sanitize_request():
 
 @app.after_request
 def add_security_headers(response):
-    response.headers['Content-Security-Policy'] = "default-src 'self'; script-src 'self'; style-src 'self'"
+    response.headers['Content-Security-Policy'] = "default-src 'self'"
     response.headers['X-Content-Type-Options'] = 'nosniff'
     response.headers['X-Frame-Options'] = 'DENY'
     response.headers['Server'] = 'Unknown'
@@ -70,7 +84,11 @@ app.register_blueprint(generate_report_bp)
 
 @app.route("/")
 def index():
-    return {"service": "Tool-38 AI Service", "status": "running"}
+    return jsonify({
+        "service": "Tool-38 AI Service",
+        "status": "running"
+    })
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000, debug=True)
+    debug_mode = os.getenv("FLASK_ENV", "production") == "development"
+    app.run(host="0.0.0.0", port=5000, debug=debug_mode)
