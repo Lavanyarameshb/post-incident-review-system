@@ -91,6 +91,8 @@ def index():
 
 if __name__ == "__main__":
     from services.embeddings import load_model
+    from services.chromadb_service import init_chromadb
     load_model()
+    init_chromadb()
     debug_mode = os.getenv("FLASK_ENV", "production") == "development"
     app.run(host="0.0.0.0", port=5000, debug=debug_mode)
