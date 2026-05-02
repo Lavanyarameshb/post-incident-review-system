@@ -2,6 +2,7 @@ from flask import Blueprint, request, jsonify
 from services.groq_client import call_groq
 from services.prompt_loader import load_prompt
 from datetime import datetime
+from services.cache import get_cached, set_cached
 import json
 import logging
 import re
@@ -126,6 +127,13 @@ def generate_report():
         "affected_system": sanitise_text(str(data["affected_system"]))
     }
 
+    # 3.5 Check cache first
+    cached = get_cached("generate-report", cleaned)
+    if cached:
+        cached["from_cache"] = True
+        return jsonify(cached), 200
+
+
     # 4. Load prompt template
     try:
         prompt = load_prompt("generate_report.txt", **cleaned)
@@ -162,6 +170,8 @@ def generate_report():
 
         parsed["generated_at"] = datetime.utcnow().isoformat()
         parsed["is_fallback"] = False
+        parsed["from_cache"] = False
+        set_cached("generate-report", cleaned, parsed)
         return jsonify(parsed), 200
 
     except json.JSONDecodeError:
