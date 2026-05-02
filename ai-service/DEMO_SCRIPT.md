@@ -94,3 +94,29 @@ A: Average 3-4 seconds per request. Redis caching
 Q: Is the API key secure?
 A: Stored in .env file which is in .gitignore.
    Never committed to GitHub.
+
+
+## Day 18 — Final Demo Preparation
+
+### Demo Checklist
+- Flask running without errors ✅
+- All 3 endpoints return valid JSON ✅
+- Postman collection Tool-38 Demo saved ✅
+- Backup screenshots ready ✅
+- Demo script memorised ✅
+- GitHub link ready ✅
+- Can answer all Q&A questions ✅
+
+### Postman Collection
+Saved as Tool-38 Demo with 4 requests:
+- GET /health
+- POST /describe
+- POST /recommend
+- POST /generate-report
+
+### Demo Order
+1. Show /health — service is running
+2. POST /describe — AI analyses incident
+3. POST /recommend — AI gives 3 recommendations
+4. POST /generate-report — AI writes full report
+5. Show security — injection attempt stripped
