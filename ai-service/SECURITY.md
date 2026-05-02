@@ -32,3 +32,14 @@
 ## Sign-off
 - AI Developer 1: Lavanya
 - AI Developer 2: ________________
+
+## Additional Tests — /generate-report
+
+| Test | Input | Expected | Result |
+|------|-------|----------|--------|
+| Empty input | {} | 400 error | ✅ Pass |
+| Missing field | No root_cause | 400 error | ✅ Pass |
+| Invalid severity | EXTREME | 400 error | ✅ Pass |
+| Prompt injection | Ignore previous in summary | Stripped | ✅ Pass |
+| Valid input | Full incident details | Full JSON report | ✅ Pass |
+| Truncated JSON | Groq cuts off response | Auto fixed | ✅ Pass |
