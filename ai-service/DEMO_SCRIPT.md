@@ -120,3 +120,27 @@ Saved as Tool-38 Demo with 4 requests:
 3. POST /recommend — AI gives 3 recommendations
 4. POST /generate-report — AI writes full report
 5. Show security — injection attempt stripped
+
+## Day 19 — Final Demo Practice
+
+### Full Demo Practiced with Timer ✅
+- Opening statement practiced ✅
+- Health endpoint demo practiced ✅
+- Describe endpoint demo practiced ✅
+- Recommend endpoint demo practiced ✅
+- Generate Report demo practiced ✅
+- Tech explanation practiced ✅
+
+### Q&A Practiced ✅
+- What AI model? — LLaMA-3.3-70b on Groq ✅
+- What if AI fails? — Fallback with is_fallback: true ✅
+- How fast? — 3-4 seconds average ✅
+- How secure? — Sanitisation, rate limiting, ZAP scan ✅
+- API key safe? — In .env only, never on GitHub ✅
+
+### Final Test Results
+- 30 demo records: 30 passed, 0 failed ✅
+- All endpoints under 5s target ✅
+- GitHub files verified ✅
+- Postman collection ready ✅
+- Demo Day checklist complete ✅
