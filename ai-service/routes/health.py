@@ -1,5 +1,4 @@
 from flask import Blueprint, jsonify
-from services.cache import get_redis_status
 from datetime import datetime
 import time
 import os
@@ -22,8 +21,6 @@ def health():
     groq_key = os.getenv("GROQ_API_KEY", "")
     groq_configured = len(groq_key) > 10
 
-    redis_status = get_redis_status()
-
     return jsonify({
         "status": "ok",
         "service": "Tool-38 AI Service",
@@ -31,7 +28,10 @@ def health():
         "uptime": get_uptime(),
         "model": "llama-3.3-70b-versatile",
         "groq_configured": groq_configured,
-        "redis": redis_status,
+        "redis": {
+            "connected": False,
+            "reason": "Redis not configured"
+        },
         "endpoints": [
             "POST /describe",
             "POST /recommend",

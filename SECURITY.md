@@ -103,3 +103,15 @@
 
 ### Conclusion:
 No Critical or High findings. All fixable issues have been addressed.
+
+## Performance Results — Day 9
+
+| Endpoint | Avg Response Time | Target | Status |
+|----------|------------------|--------|--------|
+| GET /health | ~0.01s | 5.0s | ✅ Pass |
+| POST /describe | ~3.4s | 5.0s | ✅ Pass |
+| POST /recommend | ~2.7s | 5.0s | ✅ Pass |
+| POST /generate-report | ~4.9s | 5.0s | ✅ Pass |
+
+Note: Response times depend on Groq free tier availability.
+Redis caching will significantly reduce times for repeated requests.

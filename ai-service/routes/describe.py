@@ -49,7 +49,7 @@ def describe():
         return jsonify({"error": "Internal prompt error"}), 500
 
     # 5. Call Groq
-    raw_result = call_groq(prompt, temperature=0.3)
+    raw_result = call_groq(prompt, temperature=0.3, max_tokens=500)
 
     # 6. Handle Groq failure — return fallback
     if raw_result is None:

@@ -143,8 +143,7 @@ def generate_report():
 
     # 5. Call Groq — use higher max_tokens for full report
    
-    raw_result = call_groq(prompt, temperature=0.3, max_tokens=2000)
-    
+    raw_result = call_groq(prompt, temperature=0.3, max_tokens=1500)
 
     # 6. Handle Groq failure
     if raw_result is None:

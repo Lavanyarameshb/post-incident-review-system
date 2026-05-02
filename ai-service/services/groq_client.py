@@ -11,7 +11,6 @@ logger = logging.getLogger(__name__)
 
 client = Groq(api_key=os.getenv("GROQ_API_KEY"))
 
-# Track response times for health endpoint
 response_times = []
 MAX_TRACKED = 20
 
@@ -57,19 +56,15 @@ def call_groq(
             if len(response_times) > MAX_TRACKED:
                 response_times.pop(0)
 
-            logger.info(f"Groq responded in {elapsed:.2f}s on attempt {attempt + 1}")
+            logger.info(f"Groq responded in {elapsed:.2f}s")
             return response.choices[0].message.content
 
         except Exception as e:
             elapsed = time.time() - start
-            logger.error(
-                f"Groq call failed on attempt {attempt + 1} "
-                f"after {elapsed:.2f}s: {e}"
-            )
+            logger.error(f"Groq failed attempt {attempt + 1} after {elapsed:.2f}s: {e}")
             if attempt < retries - 1:
                 wait = 2 ** attempt
                 logger.info(f"Retrying in {wait}s...")
                 time.sleep(wait)
             else:
-                logger.error("All retry attempts exhausted — returning None")
                 return None
