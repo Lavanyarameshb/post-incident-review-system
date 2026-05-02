@@ -1,8 +1,14 @@
+# Environment variables 
 .env
-__pycache__/
-*.pyc
-node_modules/
+
+# Java / Spring Boot
 target/
+
+# Python
+__pycache__/
+
+# Node 
+node_modules/
+
+# ChromaDB
 chroma_data/
-venv/
-*.class
