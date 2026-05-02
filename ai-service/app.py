@@ -90,5 +90,7 @@ def index():
     })
 
 if __name__ == "__main__":
+    from services.embeddings import load_model
+    load_model()
     debug_mode = os.getenv("FLASK_ENV", "production") == "development"
     app.run(host="0.0.0.0", port=5000, debug=debug_mode)
