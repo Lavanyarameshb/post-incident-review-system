@@ -104,52 +104,8 @@
 ### Conclusion:
 No Critical or High findings. All fixable issues have been addressed.
 
-## Performance Results — Day 9
 
-| Endpoint | Avg Response Time | Target | Status |
-|----------|------------------|--------|--------|
-| GET /health | ~0.01s | 5.0s | ✅ Pass |
-| POST /describe | ~3.4s | 5.0s | ✅ Pass |
-| POST /recommend | ~2.7s | 5.0s | ✅ Pass |
-| POST /generate-report | ~4.9s | 5.0s | ✅ Pass |
 
-Note: Response times depend on Groq free tier availability.
-Redis caching will significantly reduce times for repeated requests.
 
-## Day 11 — ZAP Active Scan Results
 
-### Scan Details
-- Tool: OWASP ZAP 2.15.0
-- Target: http://localhost:5000
-- Type: Active Scan
 
-### Results
-| Severity | Count | Status |
-|----------|-------|--------|
-| Critical | 0 | ✅ None found |
-| High | 0 | ✅ None found |
-| Medium | 0 | ✅ None found |
-| Low | 0 | ✅ None found |
-
-### Sentence Transformers
-- Model: all-MiniLM-L6-v2
-- Pre-loaded at startup: ✅
-- Cold start delay eliminated: ✅
-
-## Day 16 — Final Verification
-
-### Performance
-| Endpoint | Avg Time | Target | Status |
-|----------|----------|--------|--------|
-| GET /health | ~2.0s | 5.0s | ✅ Pass |
-| POST /describe | ~3.2s | 5.0s | ✅ Pass |
-| POST /recommend | ~3.1s | 5.0s | ✅ Pass |
-| POST /generate-report | ~3.8s | 5.0s | ✅ Pass |
-
-### Final Checks
-- All 30 demo records passing ✅
-- Fallback working on invalid input ✅
-- Security headers on all responses ✅
-- No secrets committed to GitHub ✅
-- README complete ✅
-- Dockerfile ready ✅
